@@ -1,0 +1,129 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main {
+    flex: 1;
+    background: #f5f5f5;
+  }
+  
+  .hero {
+    background: linear-gradient(45deg, #74b9ff, #a8e6cf);
+    padding: 80px 20px;
+    text-align: center;
+    color: white;
+  }
+  
+  .title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .subtitle {
+    font-size: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .faqSection {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .faqContainer {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .faqItem {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .faqItem:last-child {
+    border-bottom: none;
+  }
+  
+  .faqQuestion {
+    width: 100%;
+    text-align: left;
+    padding: 20px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .icon {
+    font-size: 24px;
+    color: #666;
+  }
+  
+  .faqAnswer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+  }
+  
+  .faqItem.active .faqAnswer {
+    padding: 20px;
+    max-height: 1000px;
+  }
+  
+  .contact {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+  }
+  
+  .contact h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .contact p {
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .contactButton {
+    background: #2c2c2c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .contactButton:hover {
+    background: #1a1a1a;
+  }
+  
+  @media (max-width: 768px) {
+    .title {
+      font-size: 36px;
+    }
+  
+    .subtitle {
+      font-size: 20px;
+    }
+  
+    .faqQuestion {
+      font-size: 16px;
+    }
+  }
+  

@@ -1,0 +1,38 @@
+/* navbar.css */
+.navbar {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+
+.navbar li {
+  padding: 10px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #e3d7d7;
+}
+
+.navbar a:hover {
+  color: #007BFF;
+  /* Change color on hover */
+}
+
+.activeLink {
+  font-weight: bold;
+  color: #007BFF;
+  /* Active link color */
+}
+
+button {
+  background-color: #FF4C4C;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #D43F3F;
+}
