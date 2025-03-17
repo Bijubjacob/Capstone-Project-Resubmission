@@ -1,32 +1,32 @@
-"use client";
 import React from "react";
-import styles from "./Blog.module.css";
+import styles from "./Styles/Blog.module.css";
 import Header from "./Header";
 import Footer from "./Footer";
+
 
 const Blog = () => {
     const blogPosts = [
         {
             id: 1,
-            title: "Top 10 Photo Editing Tips",
-            excerpt: "Learn the secrets of professional photo editing...",
-            image: "URL_blog1",
+            title: "10 Essential Photo Editing Tips for Beginners",
+            excerpt: "Dive into the world of photo editing with these 10 essential tips to improve your images. From adjusting exposure to perfecting color balance, we’ve got you covered.",
+            image: "https://via.placeholder.com/600x400", // Placeholder image URL
             date: "2023-12-01",
             category: "Tips & Tricks",
         },
         {
             id: 2,
-            title: "The Future of AI in Photography",
-            excerpt: "Exploring how artificial intelligence is changing...",
-            image: "URL_blog2",
+            title: "How AI is Revolutionizing Photography",
+            excerpt: "Artificial intelligence is transforming the photography industry. From automatic enhancements to predictive editing tools, discover how AI is shaping the future of photography.",
+            image: "https://via.placeholder.com/600x400", // Placeholder image URL
             date: "2023-11-28",
             category: "Technology",
         },
         {
             id: 3,
-            title: "Color Grading Masterclass",
-            excerpt: "Master the art of color grading with our comprehensive...",
-            image: "URL_blog3",
+            title: "Master Color Grading Like a Pro",
+            excerpt: "Learn how to master the art of color grading in photography. This guide covers the techniques used by professionals to enhance their images and create stunning visuals.",
+            image: "https://via.placeholder.com/600x400", // Placeholder image URL
             date: "2023-11-25",
             category: "Tutorials",
         },
@@ -39,7 +39,7 @@ const Blog = () => {
                 <section className={styles.hero}>
                     <h1 className={styles.title}>Blog & News</h1>
                     <p className={styles.subtitle}>
-                        Stay updated with the latest in photo editing
+                        Stay updated with the latest trends, tips, and tutorials in photography and photo editing.
                     </p>
                 </section>
 
@@ -68,14 +68,17 @@ const Blog = () => {
 
                 <section className={styles.newsletter}>
                     <h2>Subscribe to Our Newsletter</h2>
-                    <p>Get the latest updates directly in your inbox</p>
+                    <p>Get the latest updates, tutorials, and expert tips delivered straight to your inbox.</p>
                     <form className={styles.subscribeForm}>
                         <input
                             type="email"
                             placeholder="Enter your email"
                             aria-label="Email address"
+                            required
                         />
-                        <button type="submit">Subscribe</button>
+                        <button type="submit" className={styles.subscribeButton}>
+                            Subscribe
+                        </button>
                     </form>
                 </section>
             </main>

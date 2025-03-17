@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
-import styles from "../../pages/public/Styles/AboutUs.module.css";  // Import CSS Module
+import styles from "../../pages/public/Styles/AboutUs.module.css"; // Import CSS Module
 import Header from "./Header";
 import Footer from "./Footer";
-import videoSrc from "../public/Images/1575e814-53c6-4e9c-8c48-224b1675795f.mp4";  // Adjust the path accordingly
-
+import videoSrc from "../public/Images/1575e814-53c6-4e9c-8c48-224b1675795f.mp4"; // Adjust the path accordingly
 
 const AboutUs = () => {
   return (
@@ -28,10 +27,16 @@ const AboutUs = () => {
             </p>
           </div>
           <div className={styles.storyImage}>
-            <video width="800" height="600" controls autoPlay loop>
-              <source src={videoSrc} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {/* Using the Embed URL from Pexels */}
+            <iframe
+              width="800"
+              height="600"
+              src="https://www.pexels.com/embed/3774096" // Embed link for the video from Pexels
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Pexels Video"
+            />
           </div>
         </section>
 
@@ -57,17 +62,26 @@ const AboutUs = () => {
           <h2>Our Team</h2>
           <div className={styles.teamGrid}>
             <div className={styles.teamMember}>
-              <img src="URL_team1" alt="Team member" />
+              <img
+                src="https://via.placeholder.com/150" // Replace with your team's images
+                alt="Team member"
+              />
               <h3>John Doe</h3>
               <p>Founder & CEO</p>
             </div>
             <div className={styles.teamMember}>
-              <img src="URL_team2" alt="Team member" />
+              <img
+                src="https://via.placeholder.com/150" // Replace with your team's images
+                alt="Team member"
+              />
               <h3>Jane Smith</h3>
               <p>Lead Editor</p>
             </div>
             <div className={styles.teamMember}>
-              <img src="URL_team3" alt="Team member" />
+              <img
+                src="https://via.placeholder.com/150" // Replace with your team's images
+                alt="Team member"
+              />
               <h3>Mike Johnson</h3>
               <p>Technical Director</p>
             </div>

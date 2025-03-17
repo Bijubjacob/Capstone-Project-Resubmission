@@ -194,6 +194,8 @@
   align-self: stretch;
   gap: 8px;
   padding: 8px;
+  text-decoration: none; /* Remove underline */
+  color: inherit;
 }
 
 .navigationPill:hover {
@@ -604,6 +606,15 @@
   line-height: 1.4;
   display: flex;
 }
+/* Inside your ExamplesWaitlist.module.css */
+.footer .listitem a {
+  text-decoration: none; /* Removes the underline */
+  color: inherit; /* Inherit the color from the parent element */
+}
+
+.footer .listitem a:hover {
+  color: #c446a6; /* Optional: You can add a hover color */
+}
 
 .title5 {
   white-space: nowrap;
@@ -693,4 +704,41 @@
   width: 89px;
   margin-top: 12px;
   padding-right: -34px;
+}
+
+/* ExamplesWaitlist.module.css */
+.thankYouContent {
+  text-align: center;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.thankYouTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.thankYouMessage {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.thankYouButton {
+  padding: 0.8rem 1.5rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.thankYouButton:hover {
+  background-color: #0056b3;
 }

@@ -7,6 +7,7 @@ import profileRoutes from './routes/api/profile.mjs';
 import adminRoutes from './routes/api/admin.mjs';
 import cors from 'cors';
 import listEndpoints from 'express-list-endpoints';
+import subscribeRoutes from './routes/api/subscribe.mjs';
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 // Use admin routes
 app.use('/api/admin', adminRoutes);
+app.use('/api/subscribe', subscribeRoutes); // Use the new subscribe route
 
 
 // Log cloud name for verification, but REMOVE it for production

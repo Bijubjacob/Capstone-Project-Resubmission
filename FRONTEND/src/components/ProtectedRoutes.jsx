@@ -1,28 +1,22 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { useAuth } from "../context/auth/auth_context";
+import React, { useEffect } from "react";
 
 export default function ProtectedRoutes() {
-    const { cookies } = useAuth();  // Assuming useAuth provides cookies
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(true); // Track loading state while checking the token
+  const { cookies } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // Simulate async check for token
-        const token = cookies.token;
-
-        // If no token, navigate to login page and stop further processing
-        if (!token) {
-            navigate('/auth');
-        } else {
-            setLoading(false); // If token exists, stop loading and show the protected content
-        }
-    }, [cookies, navigate]); // Dependency on cookies and navigate
-
-    if (loading) {
-        return <h1>Loading...</h1>; // Show loading while we check for the token
+  useEffect(() => {
+    if (!cookies.token) {
+      // If the token is not present, redirect to the login page
+      navigate("/auth");
     }
+  }, [cookies.token, navigate]); // Dependency array ensures this runs when cookies.token changes
 
-    // Once loading is done and token exists, render the protected content
-    return <Outlet />;
+  if (!cookies.token) {
+    // If the token is not present, show a message while redirecting
+    return <h1>You are not authorized to view this page!</h1>;
+  }
+
+  return <Outlet />;
 }

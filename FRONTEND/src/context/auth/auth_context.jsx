@@ -11,34 +11,65 @@ export default function AuthProvider({ children }) {
     // Login function
     async function login(formData) {
         try {
-            let res = await axios.post('http://localhost:3000/api/auth/login', formData);
-            setcookies('token', res.data.token);
+            let res = await axios.post('http://localhost:3000/api/auth/login', formData );
+            setcookies('token', res.data.token);  // Set token in cookies
         } catch (err) {
-            console.error(err);
+            console.error("Login failed", err);
+            if (err.response) {
+                // Handle error based on server response
+                alert("Login failed: " + err.response.data.message);
+            } else {
+                alert("Network error");
+            }
         }
     }
 
-    // Register function
-    async function signUp(formData) {
+
+    const signUp = async (formData) => {
         try {
-            let res = await axios.post('http://localhost:3000/api/users/register', formData);
-            setcookies('token', res.data.token);
-        } catch (err) {
-            console.error(err);
+          const response = await axios.post('http://localhost:3000/api/users/register', {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            password2: formData.password2,
+          });
+      
+          // Check for success in the response data
+          if (response.data.success) {
+            return response.data; // Return the successful response
+          } else {
+            throw new Error("Sign up failed.");
+          }
+        } catch (error) {
+          if (error.response && error.response.data) {
+            // Check for specific error message
+            if (error.response.data.errors) {
+              const errorMessage = error.response.data.errors[0].msg; // Capture the error message
+              console.error("Error response from API:", errorMessage);
+              throw new Error(errorMessage); // Throw error to be handled in the UI
+            } else {
+              console.error("Unknown error:", error.response.data);
+              throw new Error("Something went wrong. Please try again later.");
+            }
+          }
+          throw new Error("Something went wrong. Please try again later.");
         }
-    }
+      };
+      
 
     // Logout function
     async function logout() {
-        removeCookie('token');
+        removeCookie('token');  // Remove the token from cookies
     }
 
     const value = useMemo(() => ({
         cookies,
+        setcookies,
+        removeCookie,
         login,
         signUp,
-        logout
-    }), [cookies]);
+        logout,
+      }), [cookies]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

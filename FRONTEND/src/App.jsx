@@ -7,6 +7,8 @@ import Dashboard from './pages/dashboard/Index';
 import ProtectedRoutes from './components/ProtectedRoutes'; // Your protected route component
 import ExamplesWaitlist from './pages/public/ExamplesWaitlist';
 import AboutUs from './pages/public/AboutUs';
+import FAQ from './pages/public/FAQ';
+import Blog from './pages/public/Blog';
 import VerifyEmail from './utils/VerifyEmail'; // import the new component
 
 
@@ -18,7 +20,9 @@ function App() {
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/AboutUs" element={<AboutUs />} />
-      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/FAQ" element={<FAQ />} />
+      <Route path="/Blog" element={<Blog />} />
+      <Route path="/VerifyEmail" element={<VerifyEmail />} />
 
       {/* Protected route for Dashboard */}
       <Route element={<ProtectedRoutes />}>

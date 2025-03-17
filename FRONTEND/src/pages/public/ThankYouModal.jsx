@@ -1,6 +1,6 @@
 import React from "react";
-import { Modal } from "./modal";
-import styles from "../ExamplesWaitlist.module.css";
+import { Modal } from "./../public/Modal";
+import styles from "../public/Styles/ExamplesWaitlist.module.css"; // Adjust to your actual styles location
 
 export const ThankYouModal = ({ isOpen, onClose }) => {
   return (

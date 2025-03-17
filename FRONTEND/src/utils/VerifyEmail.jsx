@@ -1,54 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const VerifyEmail = () => {
-    const [isVerified, setIsVerified] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const location = useLocation();
-    const navigate = useNavigate();
+  const { token } = useParams();  // Get the token from the URL
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);  // Add loading state
+  const [errorMessage, setErrorMessage] = useState('');  // Handle specific errors
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const token = params.get('token');
+  useEffect(() => {
+    // Log the token to verify if it's being extracted correctly
+    console.log('Token:', token);
 
-        if (token) {
-            console.log('Verification token:', token); // Log the token received in the URL
+    if (token) {
+      axios
+        .get(`${import.meta.env.VITE_API_BASE_URL}/users/verify-email/${token}`) // Use import.meta.env to access VITE_API_BASE_URL
+        .then((response) => {
+          setMessage('Your email has been successfully verified!');
+          setTimeout(() => {
+            navigate('/login');
+          }, 3000);
+        })
+        .catch((error) => {
+          if (error.response) {
+            // Server responded with an error
+            setErrorMessage(error.response.data.errors[0].msg || 'There was an error with your verification.');
+          } else if (error.request) {
+            // No response from the server
+            setErrorMessage('Network error. Please try again later.');
+          } else {
+            // Other errors
+            setErrorMessage('An unexpected error occurred.');
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);  // Set loading to false once the request is complete
+        });
+    } else {
+      setIsLoading(false);
+      setErrorMessage('Invalid verification token.');
+    }
+  }, [token, navigate]);
 
-            fetch(`${process.env.REACT_APP_API_URL}/api/users/verify-email/${token}`)
-                .then(response => {
-                    console.log('Backend response status:', response.status); // Log status code
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Backend response data:', data); // Log response data
-                    if (data.success) {
-                        setIsVerified(true);
-                    } else {
-                        setErrorMessage(data.errors[0].msg || 'Verification failed, please try again.');
-                    }
-                })
-                .catch(err => {
-                    console.error('Error during verification:', err); // Log any errors
-                    setErrorMessage('There was an error with the verification process.');
-                });
-        }
-    }, [location.search]);
-
-    return (
-        <div>
-            <h2>Email Verification</h2>
-            {isVerified ? (
-                <div>
-                    <p>Your email has been successfully verified!</p>
-                    <button onClick={() => navigate('/login')}>Go to Login</button>
-                </div>
-            ) : (
-                <div>
-                    <p>{errorMessage}</p>
-                </div>
-            )}
-        </div>
-    );
+  return (
+    <div>
+      <h2>Email Verification</h2>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <p>{message || errorMessage}</p>
+      )}
+    </div>
+  );
 };
 
 export default VerifyEmail;

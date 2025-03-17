@@ -1,11 +1,17 @@
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../../models/User.mjs'; // Adjust path as per your project structure
+
+const router = express.Router();
+
+// Email verification route
 router.get('/verify-email/:token', async (req, res) => {
     const { token } = req.params;
 
-    // Log token received
     console.log('Received token:', token);
 
     try {
-        // Decode the JWT token
+        // Decode the JWT token to get the user ID
         const decoded = jwt.verify(token, process.env.jwtSecret);
         console.log('Decoded JWT:', decoded); // Log decoded token to ensure it's correct
 
@@ -27,9 +33,16 @@ router.get('/verify-email/:token', async (req, res) => {
         const updatedUser = await user.save();
         console.log('Updated user:', updatedUser); // Log the updated user to ensure isVerified is true
 
-        res.json({ success: true, msg: 'Email verified successfully' });
+        // Send success response
+        res.status(200).json({ success: true, msg: 'Email verified successfully' });
     } catch (err) {
-        console.error('Error during verification:', err); // Log any errors during processing
-        res.status(400).json({ errors: [{ msg: 'Invalid or expired token' }] });
+        // Handle JWT errors (invalid token or expired token)
+        console.error('Error during verification:', err);
+        if (err.name === 'TokenExpiredError') {
+            return res.status(400).json({ errors: [{ msg: 'Token has expired' }] });
+        }
+        return res.status(400).json({ errors: [{ msg: 'Invalid or expired token' }] });
     }
 });
+
+export default router;

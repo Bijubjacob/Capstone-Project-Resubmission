@@ -11,9 +11,20 @@ const router = express.Router();
 router.use(auth);
 
 // @route   GET /api/profile
-// @desc    Get current user's profile
+// @desc    Get user profile
 // @access  Private
-router.get('/', getProfile); // Controller to get profile by user ID
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await user.findById(req.user.id); // Assuming you have a User model
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 // @route   POST /api/profile/upload-profile-picture
 // @desc    Upload profile picture to Cloudinary and update the profile

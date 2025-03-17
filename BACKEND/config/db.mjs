@@ -11,7 +11,6 @@ const connectDB = async () => {
   try {
     await mongoose.connect(db, {
       useNewUrlParser: true,
-      useUnifiedTopology: true, // Add this for the latest connection handling
     });
 
     console.log('Mongo DB Connected...');
@@ -21,15 +20,5 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-// Gracefully close DB connection on application shutdown
-process.on('SIGINT', async () => {
-  try {
-    await mongoose.connection.close();
-    console.log('MongoDB connection closed');
-  } catch (err) {
-    console.error('Error closing MongoDB connection:', err.message);
-  } finally {
-    process.exit(0);
-  }
-});
+
 export default connectDB;

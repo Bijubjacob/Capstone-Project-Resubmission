@@ -15,7 +15,7 @@ const AuthPage = () => {
 
   return (
     <div className="auth-container">
-      <h1>{newUser ? 'Sign Up' : 'Log In'}</h1>
+      <h1>{newUser ? 'Sign Up' : ''}</h1>
 
       {/* Conditionally render SignUp or LoginForm based on newUser */}
       {newUser ? (
@@ -34,17 +34,17 @@ const AuthPage = () => {
                 onClick={handleSwitchToLogin} // Switch to login form
                 aria-label="Switch to Login"
               >
-                Log In
+
               </button>
             </>
           ) : (
             <>
-              Don't have an account?{' '}
+        
               <button
                 onClick={handleSwitchToSignUp} // Switch to sign-up form
                 className="switchButton"
               >
-                Sign Up
+       
               </button>
             </>
           )}

@@ -4,13 +4,13 @@ import '../../styles/navbar.css';
 
 const Navbar = () => {
   const { cookies, logout } = useAuth();  // Access the cookies and logout function from context
-  const navigate = useNavigate();  // Use navigate for redirection
+  const nav = useNavigate();  // Use navigate for redirection
   const location = useLocation();  // Get the current location to highlight the active link
 
   // Function to handle logout
   const handleLogout = () => {
     logout();  // Logout the user
-    navigate('/auth');  // Redirect to the login page
+    nav('/auth');  // Redirect to the login page
   };
 
   // Check if the user is authenticated by checking the cookies

@@ -5,50 +5,56 @@ import Header from "../public/Header";
 import Footer from "../public/Footer";
 import "../../styles/SignUpForm.css";
 
-const SignUp = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
-  });
+const SignUp = ({ setNewUser }) => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const { signUp, loading } = useAuth();
-  const navigate = useNavigate();
+  const { signUp } = useAuth();
+  const nav = useNavigate(); // Initialized useNavigate into variable
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError(""); // Clear error when user types
   };
 
-  const handleSubmit = async (e) => {
+  const handleClick = () => {
+    setNewUser(false);
+  };
+
+  async function handleSubmit(e) {
     e.preventDefault();
     setError(""); // Reset error state on submit
 
     // Validate password match
     if (formData.password !== formData.password2) {
-      setError("Passwords do not match");
-      return;
-    }
+      alert("Passwords do not match");
+    } else {
+      try {
+        // Call signUp function
+        const response = await signUp(formData);
 
-    try {
-      // Call the signUp function (you should replace this with your API call)
-      const response = await signUp(formData);
-      if (response.success) {
-        setSuccessMessage('Registration successful. Please check your inbox for email verification.');
-        // Clear form data after success
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          password2: "",
-        });
+        if (response.success) {
+          setSuccessMessage('Registration successful. Please check your inbox for email verification.');
+          // Clear form data after success
+          setFormData({
+            name: "",
+            email: "",
+            password: "",
+            password2: "",
+          });
+          nav('/dashboard'); // Redirect to dashboard after successful registration
+        }
+      } catch (err) {
+        // Display error if the user already exists
+        setError(err.message || "Sign up failed. Please try again.");
       }
-    } catch (err) {
-      setError(err.message || "Sign up failed. Please try again.");
     }
-  };
+  } 
 
   return (
     <>
@@ -56,7 +62,7 @@ const SignUp = () => {
       <main className="container">
         <div className="forms">
           <h1 className="title">Create Account</h1>
-          <form className="form" onSubmit={handleSubmit} noValidate>
+          <form className="form" onSubmit={handleSubmit}>
             {error && <div className="errorMessage">{error}</div>}
             {successMessage && <div className="successMessage">{successMessage}</div>}
 
@@ -118,13 +124,7 @@ const SignUp = () => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="submitButton"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Create Account"}
-            </button>
+            <button type="submit" className="submitButton">Register</button>
           </form>
 
           <p className="switchText">

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth/auth_context";
 import Header from "../../pages/public/Header";
 import Footer from "../../pages/public/Footer";
@@ -10,30 +10,28 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
-  const { login, loading } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation(); // Access location to get the message passed via state
+  const [message, setMessage] = useState(""); // Define message state
+  const [error, setError] = useState(""); // Define error state
+  const { login, loading } = useAuth(); // Use the loading state from context
+  const nav = useNavigate();
 
-  // Access message passed via location state (from SignUp)
-  const message = location.state?.message;
-
-  const handleChange = (e) => {
+  // Handle input changes
+  function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(""); // Clear error when user types
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  // Handle form submission
+  async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
 
     try {
-      await login(formData); // Login the user using the login function from context
-      navigate("/dashboard"); // Redirect to the dashboard after successful login
+      await login(formData); // Attempt to login the user
+      setMessage("Login successful!"); // Display success message
+      nav("/dashboard"); // Redirect to dashboard after successful login
     } catch (err) {
-      setError(err.message || "Login failed. Please try again.");
+      setError(err.message || "Login failed. Please try again."); // Set error message if login fails
     }
-  };
+  }
 
   return (
     <>
@@ -56,7 +54,7 @@ const LoginForm = () => {
             </div>
           )}
 
-          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <form className={styles.form} autoComplete='off' onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input
@@ -91,7 +89,7 @@ const LoginForm = () => {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={loading}
+              disabled={loading} // Disable button if loading
             >
               {loading ? (
                 <span
