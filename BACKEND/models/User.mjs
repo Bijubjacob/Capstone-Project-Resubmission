@@ -21,10 +21,10 @@ const UserSchema = new mongoose.Schema({
   //   enum: ['user', 'admin'], // Can be 'user' or 'admin'
   //   default: 'user',         // Default to regular user
   // },
-  isVerified: {
-    type: Boolean,
-    default: false, // Default value for unverified users
-  },
+  // isVerified: {
+  //   type: Boolean,
+  //   default: false, // Default value for unverified users
+  // },
 }, { timestamps: true });
 
 

@@ -1,35 +1,46 @@
-import { useState } from "react";
-import styles from "./ProfileUpdateForm.module.css";
+import { useState, useEffect } from "react";
+import styles from "../../styles/ProfileUpdateForm.module.css";
 import api from "../../utils/api"; // Axios instance to handle requests
+import React from "react";
 
 const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
+  // Initializing the form data (For Update or Create)
   const [formData, setFormData] = useState({
-    firstName: profile.firstName || "",
-    lastName: profile.lastName || "",
-    email: profile.email || "",
-    phoneNumber: profile.phoneNumber || "",
-    bio: profile.bio || "",
-    location: profile.location || "",
+    firstName: profile?.firstName || "",
+    lastName: profile?.lastName || "",
+    email: profile?.email || "",
+    phoneNumber: profile?.phoneNumber || "",
+    bio: profile?.bio || "",
+    location: profile?.location || "",
   });
 
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
     try {
-      const response = await api.put("/profile", formData);  // API request to update profile
-      onProfileUpdated(response.data);  // Callback to update profile in parent component
+      let response;
+      if (profile) {
+        // Update profile (PUT)
+        response = await api.put("/profile", formData);
+      } else {
+        // Create profile (POST)
+        response = await api.post("/profile", formData);
+      }
+      onProfileUpdated(response.data); // Callback to parent
     } catch (err) {
-      setError("Failed to update profile.");
+      setError("Failed to save profile.");
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -38,10 +49,11 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h2>Update Profile</h2>
+      <h2>{profile ? "Update Profile" : "Create Profile"}</h2>
 
-      {error && <div className={styles.errorMessage}>{error}</div>}  {/* Display error */}
+      {error && <div className={styles.errorMessage}>{error}</div>}
 
+      {/* First Name */}
       <div className={styles.inputGroup}>
         <label>First Name</label>
         <input
@@ -53,6 +65,7 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Last Name */}
       <div className={styles.inputGroup}>
         <label>Last Name</label>
         <input
@@ -64,6 +77,7 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Email */}
       <div className={styles.inputGroup}>
         <label>Email</label>
         <input
@@ -75,6 +89,7 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Phone Number */}
       <div className={styles.inputGroup}>
         <label>Phone Number</label>
         <input
@@ -85,6 +100,7 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Bio */}
       <div className={styles.inputGroup}>
         <label>Bio</label>
         <textarea
@@ -94,6 +110,7 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Location */}
       <div className={styles.inputGroup}>
         <label>Location</label>
         <input
@@ -104,8 +121,9 @@ const ProfileUpdateForm = ({ profile, onProfileUpdated }) => {
         />
       </div>
 
+      {/* Submit Button */}
       <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
-        {isSubmitting ? "Updating..." : "Update Profile"}
+        {isSubmitting ? "Saving..." : profile ? "Update Profile" : "Create Profile"}
       </button>
     </form>
   );

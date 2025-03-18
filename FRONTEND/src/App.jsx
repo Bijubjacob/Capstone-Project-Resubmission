@@ -9,7 +9,7 @@ import ExamplesWaitlist from './pages/public/ExamplesWaitlist';
 import AboutUs from './pages/public/AboutUs';
 import FAQ from './pages/public/FAQ';
 import Blog from './pages/public/Blog';
-import VerifyEmail from './utils/VerifyEmail'; // import the new component
+//import VerifyEmail from './utils/VerifyEmail'; // import the new component
 
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/FAQ" element={<FAQ />} />
       <Route path="/Blog" element={<Blog />} />
-      <Route path="/VerifyEmail" element={<VerifyEmail />} />
+  
 
       {/* Protected route for Dashboard */}
       <Route element={<ProtectedRoutes />}>

@@ -10,17 +10,14 @@ const VerifyEmail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Log the token to verify if it's being extracted correctly
-    console.log('Token:', token);
-
     if (token) {
       axios
-        .get(`${import.meta.env.VITE_API_BASE_URL}/users/verify-email/${token}`) // Use import.meta.env to access VITE_API_BASE_URL
+        .get(`${process.env.REACT_APP_API_URL}/users/verify-email/${token}`) // Use environment variable for API URL
         .then((response) => {
           setMessage('Your email has been successfully verified!');
           setTimeout(() => {
             navigate('/login');
-          }, 3000);
+          }, 3000);  // Redirect after 3 seconds
         })
         .catch((error) => {
           if (error.response) {

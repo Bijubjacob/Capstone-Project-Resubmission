@@ -56,11 +56,6 @@ router.post(
                 return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
             }
 
-            // Check if user is verified
-            if (!user.isVerified) {
-                return res.status(400).json({ errors: [{ msg: 'Please verify your email before logging in' }] });
-            }
-
             // Compare the entered password with the hashed password from the database
             const isMatch = await bcrypt.compare(password.trim(), user.password); // Using trim to remove extra spaces
 
@@ -75,23 +70,72 @@ router.post(
                 },
             };
 
-            // Sign JWT and send it back
-            jwt.sign(
-                payload,
-                process.env.jwtSecret, // Make sure you have a valid JWT secret in your .env
-                { expiresIn: '360000' }, // Token expiration time (1 hour)
-                (err, token) => {
-                    if (err) throw err;
+            // Sign access token (expires in 1 hour)
+            const accessToken = jwt.sign(payload, process.env.jwtSecret, {
+                expiresIn: '1h', // Access token expires in 1 hour
+            });
 
-                    res.json({ token });
-                }
-            );
+            // Sign refresh token (expires in 7 days)
+            const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
+                expiresIn: '7d', // Refresh token expires in 7 days
+            });
+
+            // Store the refresh token in an HttpOnly cookie
+            res.cookie('refresh_token', refreshToken, {
+                httpOnly: true, // Prevent JavaScript access
+                secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
+                sameSite: 'Strict', // Only send cookies in same-site requests
+                maxAge: 7 * 24 * 60 * 60 * 1000, // Refresh token expires in 7 days
+            });
+
+            // Send the access token in the response
+            res.json({ accessToken });
         } catch (err) {
             console.error(err);
             res.status(500).json({ errors: [{ msg: 'Server Error' }] });
         }
     }
 );
+
+// @route   POST /api/auth/refresh-token
+// @desc    Refresh Access Token using Refresh Token
+// @access  Private
+router.post('/refresh-token', async (req, res) => {
+    const refreshToken = req.cookies['refresh_token']; // Assuming the refresh token is stored in a cookie
+
+    if (!refreshToken) {
+        return res.status(401).json({ msg: 'No refresh token found, please log in again' });
+    }
+
+    try {
+        // Verify the refresh token
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+        // Find the user based on the decoded id
+        const user = await User.findById(decoded.user.id);
+
+        if (!user) {
+            return res.status(401).json({ msg: 'User not found, please log in again' });
+        }
+
+        // Create a new access token
+        const payload = {
+            user: {
+                id: user.id,
+            },
+        };
+
+        const newAccessToken = jwt.sign(payload, process.env.jwtSecret, {
+            expiresIn: '1h', // Access token expires in 1 hour
+        });
+
+        // Return the new access token
+        res.json({ accessToken: newAccessToken });
+    } catch (err) {
+        console.error(err);
+        res.status(403).json({ msg: 'Invalid refresh token' });
+    }
+});
 
 // @route   POST /api/auth/logout
 // @desc    Logout User and clear the JWT token

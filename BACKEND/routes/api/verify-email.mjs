@@ -12,7 +12,7 @@ router.get('/verify-email/:token', async (req, res) => {
 
     try {
         // Decode the JWT token to get the user ID
-        const decoded = jwt.verify(token, process.env.jwtSecret);
+        const decoded = jwt.verify(token, process.env.jwtSecret);  // Updated environment variable name to `JWT_SECRET`
         console.log('Decoded JWT:', decoded); // Log decoded token to ensure it's correct
 
         // Find the user by decoded userId
@@ -30,14 +30,13 @@ router.get('/verify-email/:token', async (req, res) => {
 
         // Update the user as verified
         user.isVerified = true;
-        const updatedUser = await user.save();
-        console.log('Updated user:', updatedUser); // Log the updated user to ensure isVerified is true
+        await user.save();
 
         // Send success response
         res.status(200).json({ success: true, msg: 'Email verified successfully' });
     } catch (err) {
-        // Handle JWT errors (invalid token or expired token)
         console.error('Error during verification:', err);
+        // Handle JWT errors (invalid token or expired token)
         if (err.name === 'TokenExpiredError') {
             return res.status(400).json({ errors: [{ msg: 'Token has expired' }] });
         }

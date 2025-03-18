@@ -8,13 +8,13 @@ import nodemailer from 'nodemailer';
 const router = express.Router();
 
 // Set up nodemailer transporter
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,  // Your email address
-        pass: process.env.EMAIL_PASS,  // Your email password (use App Passwords if 2FA is enabled)
-    },
-});
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.EMAIL_USER,  // Your email address
+//         pass: process.env.EMAIL_PASS,  // Your email password (use App Passwords if 2FA is enabled)
+//     },
+// });
 
 // @route   POST /api/users/register
 // @desc    Register User Route (with optional admin role)
@@ -48,7 +48,7 @@ router.post(
                 name,
                 email,
                 password,
-                isVerified: false, // Email verification flag
+                // isVerified: false, // Email verification flag
             });
 
             // Create a salt - Number of encryption rounds it goes through
@@ -70,35 +70,35 @@ router.post(
             jwt.sign(
                 payload,
                 process.env.jwtSecret, // Make sure you have a valid JWT secret in your .env
-                { expiresIn: '1h' }, // Token expiration time (1 hour)
+                { expiresIn: '360000' }, // Token expiration time (1 hour)
                 async (err, token) => {
                     if (err) throw err;
 
-                    // Generate the email verification token
-                    const verificationToken = jwt.sign(
-                        { userId: user.id },
-                        process.env.jwtSecret,  // Secret key for JWT
-                        { expiresIn: '1h' }    // Token expiration time (1 hour)
-                    );
+                    // // Generate the email verification token
+                    // const verificationToken = jwt.sign(
+                    //     { userId: user.id },
+                    //     process.env.jwtSecret,  // Secret key for JWT
+                    //     { expiresIn: '1h' }    // Token expiration time (1 hour)
+                    // );
 
-                    // Create the verification link
-                    const verificationLink = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+                    // // Create the verification link
+                    // const verificationLink = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
 
-                    // Send email with verification link
-                    const mailOptions = {
-                        from: process.env.EMAIL_USER,
-                        to: email,
-                        subject: 'Email Verification',
-                        text: `Please verify your email by clicking on the following link: ${verificationLink}`,
-                    };
+                    // // Send email with verification link
+                    // const mailOptions = {
+                    //     from: process.env.EMAIL_USER,
+                    //     to: email,
+                    //     subject: 'Email Verification',
+                    //     text: `Please verify your email by clicking on the following link: ${verificationLink}`,
+                    // };
 
-                    transporter.sendMail(mailOptions, (err, info) => {
-                        if (err) {
-                            console.error('Error sending email:', err);
-                            return res.status(500).json({ msg: 'Email sending error' });
-                        }
-                        console.log('Verification email sent:', info.response);
-                    });
+                    // transporter.sendMail(mailOptions, (err, info) => {
+                    //     if (err) {
+                    //         console.error('Error sending email:', err);
+                    //         return res.status(500).json({ msg: 'Email sending error' });
+                    //     }
+                    //     console.log('Verification email sent:', info.response);
+                    // });
 
                     // Respond with the token
                     res.json({ token, msg: 'User registered successfully. Please check your email to verify your account.' });

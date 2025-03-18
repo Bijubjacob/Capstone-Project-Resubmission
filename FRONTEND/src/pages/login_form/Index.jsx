@@ -16,13 +16,18 @@ const LoginForm = () => {
   const nav = useNavigate();
 
   // Handle input changes
-  function handleChange(e) {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
   // Handle form submission
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      setError("Please fill out all fields.");
+      return;
+    }
 
     try {
       await login(formData); // Attempt to login the user
@@ -31,7 +36,7 @@ const LoginForm = () => {
     } catch (err) {
       setError(err.message || "Login failed. Please try again."); // Set error message if login fails
     }
-  }
+  };
 
   return (
     <>
@@ -42,7 +47,7 @@ const LoginForm = () => {
 
           {/* Show the message about email verification */}
           {message && (
-            <div className={styles.successMessage}>
+            <div className={styles.successMessage} role="alert" aria-live="assertive">
               <p>{message}</p>
             </div>
           )}
@@ -54,7 +59,7 @@ const LoginForm = () => {
             </div>
           )}
 
-          <form className={styles.form} autoComplete='off' onSubmit={handleSubmit}>
+          <form className={styles.form} autoComplete="off" onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input
@@ -67,7 +72,11 @@ const LoginForm = () => {
                 placeholder="Enter your email"
                 required
                 aria-required="true"
+                aria-describedby="email-help"
               />
+              <small id="email-help" className={styles.inputHelp}>
+                We'll never share your email with anyone else.
+              </small>
             </div>
 
             <div className={styles.inputGroup}>
@@ -83,7 +92,11 @@ const LoginForm = () => {
                 required
                 aria-required="true"
                 minLength={6}
+                aria-describedby="password-help"
               />
+              <small id="password-help" className={styles.inputHelp}>
+                Password must be at least 6 characters.
+              </small>
             </div>
 
             <button

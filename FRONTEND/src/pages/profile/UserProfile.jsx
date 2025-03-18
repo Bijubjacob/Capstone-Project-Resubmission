@@ -1,9 +1,15 @@
 import React from "react";
 import styles from "../../styles/UserProfile.module.css";
 
-const UserProfile = ({ profile }) => {
+const UserProfile = ({ profile, error }) => {
+  if (error) {
+    return <div className={styles.errorMessage}>Error: {error}</div>;
+  }
+
   if (!profile) {
-    return <div>Loading profile...</div>;  // Show loading state or a placeholder
+    return (
+      <div className={styles.errorMessage}>Loading profile...</div>
+    ); // Could use a spinner or other loading animation
   }
 
   return (
@@ -11,7 +17,11 @@ const UserProfile = ({ profile }) => {
       <h2>Your Profile</h2>
       <div className={styles.profileHeader}>
         {profile.profilePicture ? (
-          <img src={profile.profilePicture} alt="Profile" className={styles.profilePic} />
+          <img
+            src={profile.profilePicture}
+            alt="Profile"
+            className={styles.profilePic}
+          />
         ) : (
           <div className={styles.profilePicPlaceholder}>No Profile Picture</div>
         )}
@@ -19,10 +29,13 @@ const UserProfile = ({ profile }) => {
           <h3>{profile.firstName} {profile.lastName}</h3>
           <p>{profile.bio || "No bio provided."}</p>
           <p>Email: {profile.email}</p>
-          <p>Phone: {profile.phoneNumber}</p>
+          <p>Phone: {profile.phoneNumber || "Not provided"}</p>
           <p>Location: {profile.location || "Not available"}</p>
         </div>
       </div>
+
+      {/* Optional Edit Profile Button */}
+      <button className={styles.editProfileButton}>Edit Profile</button>
     </div>
   );
 };
