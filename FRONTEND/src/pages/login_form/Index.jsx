@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth/auth_context";
 import Header from "../../pages/public/Header";
 import Footer from "../../pages/public/Footer";
-import styles from "../../styles/LoginForm.module.css"; // Import CSS Module correctly
+import styles from "../../Usersstyles/LoginForm.module.css"; // Import CSS Module correctly
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +32,6 @@ const LoginForm = () => {
     try {
       await login(formData); // Attempt to login the user
       setMessage("Login successful!"); // Display success message
-      nav("/dashboard"); // Redirect to dashboard after successful login
     } catch (err) {
       setError(err.message || "Login failed. Please try again."); // Set error message if login fails
     }
@@ -92,8 +91,10 @@ const LoginForm = () => {
                 required
                 aria-required="true"
                 minLength={6}
+                autoComplete="current-password" // Corrected to camelCase
                 aria-describedby="password-help"
               />
+
               <small id="password-help" className={styles.inputHelp}>
                 Password must be at least 6 characters.
               </small>

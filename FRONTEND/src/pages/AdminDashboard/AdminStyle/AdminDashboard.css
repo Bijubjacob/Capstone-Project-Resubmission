@@ -1,0 +1,131 @@
+.admin-dashboard {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  text-align: center; /* Center the entire dashboard */
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 32px;
+  color: #333;
+}
+
+.dashboard-header h2 {
+  font-size: 24px;
+  color: #666;
+}
+
+/* Form Styles */
+.user-form {
+  margin-bottom: 20px;
+}
+
+.user-form input,
+.user-form select,
+.user-form button {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+}
+
+.user-form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.user-form button:hover {
+  background-color: #45a049;
+}
+
+/* User List Styles */
+.user-list {
+  margin-top: 20px;
+}
+
+.user-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-list li {
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Box Styles */
+.button-box {
+  display: flex;
+  gap: 10px; /* Adds spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.edit-button,
+.delete-button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #ffa500;
+  color: white;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #e68900;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .user-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .button-box {
+    justify-content: flex-start; /* Align buttons on the left for smaller screens */
+  }
+}
+
+.Logout {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}

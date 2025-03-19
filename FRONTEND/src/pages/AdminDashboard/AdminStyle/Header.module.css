@@ -1,0 +1,39 @@
+/* AdminHeader.module.css */
+.header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.img {
+  height: 40px;
+}
+
+.nav {
+  display: flex;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+}
+
+.navItem {
+  margin-left: 20px;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+}

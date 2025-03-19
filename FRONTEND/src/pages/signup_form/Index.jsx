@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth/auth_context";
 import Header from "../public/Header";
 import Footer from "../public/Footer";
-import "../../styles/SignUpForm.css";
+import "../../Usersstyles/SignUpForm.css";
 
 const SignUp = ({ setNewUser }) => {
   const [error, setError] = useState("");

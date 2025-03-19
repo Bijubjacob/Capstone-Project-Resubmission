@@ -1,0 +1,80 @@
+.dashboardContainer {
+  display: flex;
+  height: 100vh;
+}
+
+.dashboardLayout {
+  display: flex;
+  justify-content: flex-start;
+  flex-grow: 1;
+  padding: 20px 20px 20px 270px; /* Add padding to the left to avoid overlap with sidebar */
+}
+
+.leftSection {
+  width: 200px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.leftSection h3 {
+  font-size: 1.5rem;
+}
+
+.leftSection button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.leftSection button:hover {
+  background-color: #0056b3;
+}
+
+.centerSection {
+  flex: 1;
+  padding: 20px;
+  margin-right: 20px;
+}
+
+.centerSection h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.centerSection .userDetails,
+.centerSection .profileDetails {
+  margin-top: 20px;
+}
+
+.centerSection .userDetails p,
+.centerSection .profileDetails p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.rightSection {
+  width: 250px;
+  position: sticky;
+  top: 20px;
+  z-index: 1; /* Ensure content is below the fixed sidebar */
+}
+
+.profilePicture {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileAvatar {
+  width: 100%;
+  height: auto;
+}

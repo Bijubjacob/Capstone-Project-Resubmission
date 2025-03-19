@@ -91,4 +91,43 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT route to update user profile and optionally upload a profile picture
+router.put("/", upload.single('profilePicture'), async (req, res) => {
+  try {
+    const { firstName, lastName, email, bio, phoneNumber, location, settings } = req.body;
+    let profilePictureUrl = req.body.profilePicture; // Default profile picture URL if not uploading
+
+    // If a new profile picture is uploaded, upload it to Cloudinary
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer);
+      profilePictureUrl = result.secure_url; // Get the URL of the uploaded image
+    }
+
+    // Find the profile by user ID
+    let profile = await Profile.findOne({ user: req.user.id });
+
+    if (!profile) {
+      return res.status(404).json({ msg: "Profile not found" });
+    }
+
+    // Update the profile fields
+    profile.firstName = firstName || profile.firstName;
+    profile.lastName = lastName || profile.lastName;
+    profile.email = email || profile.email;
+    profile.bio = bio || profile.bio;
+    profile.phoneNumber = phoneNumber || profile.phoneNumber;
+    profile.location = location || profile.location;
+    profile.settings = settings || profile.settings;
+    profile.profilePicture = profilePictureUrl || profile.profilePicture;
+
+    // Save the updated profile
+    await profile.save();
+
+    return res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ msg: "Server error" });
+  }
+});
+
 export default router;

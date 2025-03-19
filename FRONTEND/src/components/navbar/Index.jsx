@@ -1,45 +1,69 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/auth/auth_context';  // Import the auth context to check authentication status
-import '../../styles/navbar.css';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/auth/auth_context";
+import "../../styles/navbar.css";
 
 const Navbar = () => {
-  const { cookies, logout } = useAuth();  // Access the cookies and logout function from context
-  const nav = useNavigate();  // Use navigate for redirection
-  const location = useLocation();  // Get the current location to highlight the active link
-
-  // Function to handle logout
-  const handleLogout = () => {
-    logout();  // Logout the user
-    nav('/auth');  // Redirect to the login page
-  };
+  const { cookies, logout } = useAuth();
+  const [role, setRole] = useState(null); // State to store role
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Check if the user is authenticated by checking the cookies
   const isAuthenticated = cookies?.token;
 
+  // Check the role of the authenticated user and redirect accordingly
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Decode the token or fetch user details to check the role
+      const token = cookies.token;
+      const decoded = jwtDecode(token); // You might have this logic in context already
+      setRole(decoded.role); // Set role based on the decoded token
+
+      // Redirect based on role
+      if (decoded.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
+    }
+  }, [isAuthenticated, cookies.token, navigate]);
+
+  // Function to handle logout
+  const handleLogout = () => {
+    logout(); // Logout the user
+    navigate("/auth"); // Redirect to the login page
+  };
+
   // Helper function to add active class
   const getLinkClass = (path) => {
-    return location.pathname === path ? 'activeLink' : '';  // Highlight active link
+    return location.pathname === path ? "activeLink" : "";
   };
 
   return (
     <nav>
       <ul className="navbar">
         {isAuthenticated ? (
-          // If the user is authenticated, show the Dashboard and Logout options
           <>
+            {/* Based on role, either show Dashboard or Admin Dashboard */}
             <li>
-              <Link to="/dashboard" className={getLinkClass('/dashboard')}>
-                Dashboard
-              </Link>
+              {role === "admin" ? (
+                <Link to="/admin/dashboard" className={getLinkClass("/admin/dashboard")}>
+                  Admin Dashboard
+                </Link>
+              ) : (
+                <Link to="/dashboard" className={getLinkClass("/dashboard")}>
+                  User Dashboard
+                </Link>
+              )}
             </li>
             <li>
               <button onClick={handleLogout}>Logout</button>
             </li>
           </>
         ) : (
-          // If the user is not authenticated, show the Login link
           <li>
-            <Link to="/auth" className={getLinkClass('/auth')}>
+            <Link to="/auth" className={getLinkClass("/auth")}>
               Login
             </Link>
           </li>

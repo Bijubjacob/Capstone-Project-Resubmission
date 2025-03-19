@@ -3,22 +3,12 @@ import { check, validationResult } from 'express-validator';
 import User from '../../models/User.mjs';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
-// Set up nodemailer transporter
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: process.env.EMAIL_USER,  // Your email address
-//         pass: process.env.EMAIL_PASS,  // Your email password (use App Passwords if 2FA is enabled)
-//     },
-// });
-
 // @route   POST /api/users/register
-// @desc    Register User Route (with optional admin role)
-// @access  Public
+// @desc    Register User Route (only 'user' role can be assigned here)
+// @access  Public (anyone can register, but only as a user)
 router.post(
     '/register',
     [
@@ -36,25 +26,27 @@ router.post(
         const { name, email, password } = req.body;
 
         try {
-            // Check if user already exists
+            // Check if the user already exists
             let user = await User.findOne({ email });
 
             if (user) {
                 return res.status(400).json({ errors: [{ msg: 'User Already Exists' }] });
             }
 
-            // Create new user instance
+            // The role is always 'user' for regular user registration
+            const userRole = 'user';
+
+            // Create a new user instance
             user = new User({
                 name,
                 email,
                 password,
-                // isVerified: false, // Email verification flag
+                role: userRole,  // Defaulting to 'user'
             });
 
-            // Create a salt - Number of encryption rounds it goes through
+            // Hash the password
             const salt = await bcrypt.genSalt(10);
-
-            user.password = await bcrypt.hash(password, salt);  // Hash the password
+            user.password = await bcrypt.hash(password, salt);
 
             // Save user to database
             await user.save();
@@ -70,38 +62,12 @@ router.post(
             jwt.sign(
                 payload,
                 process.env.jwtSecret, // Make sure you have a valid JWT secret in your .env
-                { expiresIn: '360000' }, // Token expiration time (1 hour)
-                async (err, token) => {
+                { expiresIn: '1hr' }, // Expiry time for the JWT
+                (err, token) => {
                     if (err) throw err;
 
-                    // // Generate the email verification token
-                    // const verificationToken = jwt.sign(
-                    //     { userId: user.id },
-                    //     process.env.jwtSecret,  // Secret key for JWT
-                    //     { expiresIn: '1h' }    // Token expiration time (1 hour)
-                    // );
-
-                    // // Create the verification link
-                    // const verificationLink = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-
-                    // // Send email with verification link
-                    // const mailOptions = {
-                    //     from: process.env.EMAIL_USER,
-                    //     to: email,
-                    //     subject: 'Email Verification',
-                    //     text: `Please verify your email by clicking on the following link: ${verificationLink}`,
-                    // };
-
-                    // transporter.sendMail(mailOptions, (err, info) => {
-                    //     if (err) {
-                    //         console.error('Error sending email:', err);
-                    //         return res.status(500).json({ msg: 'Email sending error' });
-                    //     }
-                    //     console.log('Verification email sent:', info.response);
-                    // });
-
                     // Respond with the token
-                    res.json({ token, msg: 'User registered successfully. Please check your email to verify your account.' });
+                    res.json({ token, msg: 'User registered successfully.' });
                 }
             );
         } catch (err) {

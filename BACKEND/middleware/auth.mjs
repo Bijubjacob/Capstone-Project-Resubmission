@@ -25,11 +25,6 @@ export default (req, res, next) => {
     } catch (err) {
         console.error(err);
 
-        // Handle expired token
-        if (err.name === 'TokenExpiredError') {
-            return res.status(401).json({ errors: [{ msg: 'Token expired, please log in again' }] });
-        }
-
         // Handle invalid token
         return res.status(401).json({ errors: [{ msg: 'Token is not valid' }] });
     }

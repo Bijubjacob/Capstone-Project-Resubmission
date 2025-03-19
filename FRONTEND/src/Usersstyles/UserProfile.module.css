@@ -1,0 +1,127 @@
+/* UserProfile.module.css */
+.userProfile {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.profilePic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #007bff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profilePicPlaceholder {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  color: #777;
+  border-radius: 50%;
+  font-size: 14px;
+  text-align: center;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profileInfo h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+}
+
+.profileInfo p {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+/* Placeholder text styling */
+.profileInfo::placeholder {
+  color: #999;
+}
+
+.editButton {
+  display: flex;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  margin-left: 220px;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profileDetails {
+  border: 2px solid #e5e5e5;
+  /* Same border style */
+  max-width: 600px;
+  /* Same max width as .heroNewsletter */
+  width: 100%;
+  /* 100% width to fit container */
+  padding: 2rem;
+  margin: 0 auto;
+  border-radius: 8px;
+  /* Rounded corners like heroNewsletter */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Subtle box-shadow */
+  background-color: #fff;
+  /* White background */
+}
+
+
+/* Input fields styling */
+.profileDetails.p {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+/* Input focus effect */
+.profileDetails:focus {
+  border-color: #2c2c2c;
+  outline: none;
+}
+
+/* Placeholder text styling */
+.profileDetails::placeholder {
+  color: #999;
+}
