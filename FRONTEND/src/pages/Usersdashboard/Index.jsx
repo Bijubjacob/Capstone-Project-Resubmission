@@ -6,7 +6,7 @@ import styles from "./Dashboard.module.css";
 import DashboardNav from "./DashboardNav";
 import UserProfile from "../Usersprofile/UserProfile";
 import ProfileUpdateForm from "../Usersprofile/ProfileUpdateForm";
-import avatar from "../public/Images/765-default-avatar.png";
+import profilePicture from "../public/Images/765-default-avatar.png";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("userDashboard");

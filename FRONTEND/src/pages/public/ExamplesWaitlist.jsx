@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { Hero } from "./Hero";
+import Hero from './Hero';
 import Footer from "./Footer";
 import styles from './Styles/ExamplesWaitlist.module.css';  // Correct way for global CSS
 

@@ -30,21 +30,33 @@ function AuthProvider({ children }) {  // Default export without curly braces
     }
   }
 
-  const signUp = async (formData) => {
+  async function signUp(formData) {
     try {
-      const response = await api.post("/users/register", formData);
-
-      if (response.data.success) {
-        return response.data;
+      let res = await api.post("/users/register", formData);
+  
+      if (res.data && res.data.token) {
+        
+        // Display a pop-up message after successful registration
+        alert("User Registered Successfully!");
+  
+        // Optionally redirect the user to the login page after successful registration
+        navigate("/login"); // Redirect to login page
+        return res.data;
       } else {
-        throw new Error("Sign up failed.");
+        throw new Error("Unexpected response from server. Please try again later.");
       }
     } catch (error) {
       console.error("Sign-up error:", error);
-      throw new Error(error.response?.data?.errors?.[0]?.msg || "Something went wrong.");
+      if (error.response) {
+        console.error("Error Response:", error.response);
+        throw new Error(error.response?.data?.errors?.[0]?.msg || "Something went wrong.");
+      } else {
+        console.error("Error Details:", error);
+        throw new Error("Network error or no response from server.");
+      }
     }
-  };
-
+  }  
+  
   async function logout() {
     document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     navigate("/login");
