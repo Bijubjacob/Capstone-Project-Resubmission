@@ -1,10 +1,5 @@
 CAPSTONE PROJECT-RESUBMISSION
 
-
-# Admin Login:-
-Email: bijujacob@shootpro24.com
-Password:123456
-
 # User login:-    
       Email: bijubjacob@gmail.com
       Password: 123456
