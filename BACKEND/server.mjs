@@ -47,6 +47,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 console.log(listEndpoints(app));  // This will print all routes to the console
 
+// This route will respond to requests made to the root URL "/"
+app.get('/', (req, res) => {
+  res.send('Welcome to the backend!');
+});
+
 // Enviromental Variables
 const PORT = process.env.PORT || 10000;
 
