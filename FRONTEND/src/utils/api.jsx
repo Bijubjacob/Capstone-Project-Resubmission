@@ -9,7 +9,7 @@ function getCookie(name) {
 }
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api", // Replace with your API URL
+  baseURL: "https://shootpro24.onrender.com/api", // Replace with your API URL
 });
 
 // Interceptor to add the token from cookies to the request headers
