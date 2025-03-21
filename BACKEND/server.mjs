@@ -22,7 +22,7 @@ connectDB();
 // Initialize middleware
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow the frontend to make requests
+  origin: 'https://shootpro24.onrender.com', // Allow the frontend to make requests
   methods: 'GET,POST,PUT,DELETE', // Allow specific methods
   credentials: true, // If needed, enable cookies
 }));
