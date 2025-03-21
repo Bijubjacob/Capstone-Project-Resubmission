@@ -20,7 +20,7 @@ export const Hero = () => {
       setIsModalOpen(true);
 
       // Clear the email input field
-      setEmail(""); 
+      setEmail("");
 
       console.log(response.data.message);  // Optional: you can log the success message
     } catch (error) {
@@ -31,8 +31,16 @@ export const Hero = () => {
   return (
     <section className={styles.heroNewsletter}>
       <div className={styles.heroNewsletter2}>
-        <h1 className={styles.title}>Shootpro24</h1>
-        <p className={styles.subtitle}>You Shoot, We'll Edit</p>
+        <h1 className={styles.title}></h1>
+        <p className={styles.subtitle}></p>
+
+        {/* Background Video */}
+        <div className={styles.backgroundVideoWrapper}>
+          <video className={styles.backgroundVideo} autoPlay loop muted>
+            <source src="/Images/SHOOTPRO 2024 PROMO.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         <form onSubmit={handleSubmit} className={styles.formNewsletter}>
           <div className={styles.inputField}>
@@ -53,7 +61,7 @@ export const Hero = () => {
 
       {/* Display Thank You modal */}
       <ThankYouModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      
+
       {/* Error message display */}
       {error && <p>{error}</p>}
     </section>
