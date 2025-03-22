@@ -37,7 +37,7 @@ export const Hero = () => {
         {/* Background Video */}
         <div className={styles.backgroundVideoWrapper}>
           <video className={styles.backgroundVideo} autoPlay loop muted>
-            <source src="https://res.cloudinary.com/your-cloud-name/video/upload/w_1920,h_1080,c_limit/v1234567890/SHOOTPRO_2024_PROMO.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/doixz4sgs/video/upload/v1742602582/SHOOTPRO2024PROMO-ezgif.com-video-cutter_ea3xnt.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
