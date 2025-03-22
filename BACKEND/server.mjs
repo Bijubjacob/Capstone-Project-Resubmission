@@ -21,24 +21,21 @@ connectDB();
 
 // Initialize middleware
 
-const allowedOrigins = [
-  'http://localhost:5173', // Localhost (for development)
-  'https://shootpro24.vercel.app', // Frontend deployed on Vercel
-  'https://shootpro24.onrender.com', // If needed, allow Render backend URL (for testing)
-];
+const allowedOrigins = ['https://shootpro24.onrender.com']; // Frontend domain
 
 app.use(cors({
   origin: (origin, callback) => {
-    // If origin is not provided (e.g., direct API calls or localhost), allow it
+    // Allow requests without origin (like Postman or direct API calls)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true); // Allow the origin
     } else {
       callback(new Error('Not allowed by CORS'), false); // Deny the origin
     }
   },
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true,
+  methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+  credentials: true, // Enable cookies (if needed for session handling)
 }));
+
 
 app.use(express.json({ extended: false }));
 
