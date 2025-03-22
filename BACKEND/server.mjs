@@ -21,7 +21,10 @@ connectDB();
 
 // Initialize middleware
 
-const allowedOrigins = ['https://shootpro24.onrender.com']; // Frontend domain
+const allowedOrigins = [
+  'https://shootpro24.onrender.com', // Existing allowed origin
+  'https://shootpro24.vercel.app'    // New allowed origin for Vercel frontend
+];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -32,10 +35,9 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'), false); // Deny the origin
     }
   },
-  methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+  methods: 'GET,POST,PUT,DELETE',
   credentials: true, // Enable cookies (if needed for session handling)
 }));
-
 
 app.use(express.json({ extended: false }));
 
