@@ -23,7 +23,8 @@ connectDB();
 
 const allowedOrigins = [
   'https://shootpro24.onrender.com', // Existing allowed origin
-  'https://shootpro24.vercel.app'    // New allowed origin for Vercel frontend
+  'https://shootpro24.vercel.app',
+   'http://localhost:10000'    // New allowed origin for Vercel frontend
 ];
 
 app.use(cors({

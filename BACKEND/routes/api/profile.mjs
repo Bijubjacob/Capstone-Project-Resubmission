@@ -13,24 +13,33 @@ router.use(auth);
 // @route   GET /api/profile
 // @desc    Get user profile
 // @access  Private
-router.get('/', async (req, res) => {
+// After user registration, create or update the profile using the JWT user ID
+router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
+    const userIdFromJWT = req.user.id; // This comes from the decoded JWT token
 
-    const profile = await Profile.findOne({ user: req.user.id });
+    // Ensure the profile is associated with the correct user ID
+    let profile = await Profile.findOne({ user: userIdFromJWT });
+
     if (!profile) {
-      return res.status(404).json({ msg: 'Profile not found, please create one' });
+      profile = new Profile({
+        user: userIdFromJWT,  // Ensure the user ID from JWT is used
+        firstName: 'John',
+        lastName: '',
+        email: 'user@example.com',
+      });
+
+      await profile.save();
+      return res.status(201).json({ msg: 'Profile created successfully', profile });
     }
 
-    res.json(profile);
+    res.json(profile);  // Return the existing profile
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    return res.status(500).json({ msg: 'Server error' });
   }
 });
+
 
 // @route   POST /api/profile/upload-profile-picture
 // @desc    Upload profile picture to Cloudinary and update the profile
@@ -41,13 +50,18 @@ router.post('/upload-profile-picture', upload.single('profilePicture'), async (r
       return res.status(400).json({ msg: 'No file uploaded' });
     }
 
+    // Upload the image to Cloudinary
     const result = await uploadToCloudinary(req.file.buffer);
 
-    const profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { profilePicture: result.secure_url },
-      { new: true, upsert: true }
-    );
+    // Ensure the profile is correctly linked to the logged-in user
+    let profile = await Profile.findOne({ user: req.user.id });
+    if (!profile) {
+      return res.status(404).json({ msg: 'Profile not found, please create one' });
+    }
+
+    // Update the profile with the new profile picture URL
+    profile.profilePicture = result.secure_url;
+    await profile.save();
 
     res.status(200).json({ msg: 'Profile picture uploaded successfully', profile });
   } catch (err) {
@@ -70,6 +84,7 @@ router.post('/', async (req, res) => {
     let profile = await Profile.findOne({ user: req.user.id });
 
     if (profile) {
+      // If the profile exists, update it
       profile = await Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: req.body },
@@ -78,6 +93,7 @@ router.post('/', async (req, res) => {
       return res.status(200).json({ msg: 'Profile updated successfully', profile });
     }
 
+    // If the profile doesn't exist, create a new one
     profile = new Profile({
       user: req.user.id,
       ...req.body,
